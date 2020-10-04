@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import os
-import time
+import json
 import logging
+import os
+
 from common.server import Server
 
 
@@ -16,9 +17,16 @@ def parse_config_params():
 	returns a map with the env variables
 	"""
 	config_params = {}
+
 	try:
-		config_params["port"] = int(os.environ["SERVER_PORT"])
-		config_params["listen_backlog"] = int(os.environ["SERVER_LISTEN_BACKLOG"])
+		if "CONFIG_PATH" in os.environ:
+			with open(os.environ["CONFIG_PATH"]) as config_file:
+				config = json.load(config_file)
+				config_params["port"] = config["server_port"]
+				config_params["listen_backlog"] = config["server_listen_backlog"]
+		else:
+			config_params["port"] = int(os.environ["SERVER_PORT"])
+			config_params["listen_backlog"] = int(os.environ["SERVER_LISTEN_BACKLOG"])
 	except KeyError as e:
 		raise KeyError("Key was not found. Error: {} .Aborting server".format(e))
 	except ValueError as e:

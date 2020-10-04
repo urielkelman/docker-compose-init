@@ -17,14 +17,28 @@ func InitConfig() (*viper.Viper, error) {
 
 	// Configure viper to read env variables with the CLI_ prefix
 	v.AutomaticEnv()
+	
 	v.SetEnvPrefix("cli")
+	v.BindEnv("config", "path")
+	v.BindEnv("config", "file")
 
-	// Add env variables supported
-	v.BindEnv("id")
-	v.BindEnv("server", "address")
-	v.BindEnv("loop", "period")
-	v.BindEnv("loop", "lapse")
+	if v.IsSet("config_path") && v.IsSet("config_file") {
+		v.SetConfigName(v.GetString("config_file"))
+		v.AddConfigPath(v.GetString("config_path"))
+		err := v.ReadInConfig()
+		if err != nil { 
+			return nil, errors.Wrapf(err, "Fatal error config file.")
+		}
 
+	} else {
+		// Add env variables supported
+		v.BindEnv("id")
+		v.BindEnv("server", "address")
+		v.BindEnv("loop", "period")
+		v.BindEnv("loop", "lapse")
+	}
+
+	
 	// Parse time.Duration variables and return an error
 	// if those variables cannot be parsed
 	if _, err := time.ParseDuration(v.GetString("loop_lapse")); err != nil {

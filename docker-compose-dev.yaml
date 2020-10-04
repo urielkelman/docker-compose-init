@@ -5,26 +5,33 @@ services:
     image: server:latest
     entrypoint: python3 /main.py
     environment:
+      - CONFIG_PATH=config/server_config.json
       - PYTHONUNBUFFERED=1
       - SERVER_IP=server
-      - SERVER_PORT=12345
-      - SERVER_LISTEN_BACKLOG=5
+      #- SERVER_PORT=12345
+      #- SERVER_LISTEN_BACKLOG=5
     networks:
       - testing_net
+    volumes:
+    - "./config:/config"
 
   client1:
     container_name: client1
     image: client:latest
     entrypoint: /client
     environment:
-      - CLI_ID=1
-      - CLI_SERVER_ADDRESS=server:12345
-      - CLI_LOOP_LAPSE=1m2s
-      - CLI_LOOP_PERIOD=10s
+      - CLI_CONFIG_PATH=/config
+      - CLI_CONFIG_FILE=client_1_config
+      #- CLI_ID=1
+      #- CLI_SERVER_ADDRESS=server:12345
+      #- CLI_LOOP_LAPSE=1m2s
+      #- CLI_LOOP_PERIOD=10s
     networks:
       - testing_net
     depends_on:
       - server
+    volumes:
+      - "./config:/config"
 
 networks:
   testing_net:
