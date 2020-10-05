@@ -22,19 +22,19 @@ services:
       '''
 
 CLIENT_SEGMENT_DOCKER_COMPOSE = '''
-    client{}:
-        container_name: client{}
-        image: client:latest
-        entrypoint: /client
-        environment:
-          - CLI_ID={}
-          - CLI_SERVER_ADDRESS=server:12345
-          - CLI_LOOP_LAPSE=1m2s
-          - CLI_LOOP_PERIOD=10s
-        networks:
-          - testing_net
-        depends_on:
-          - server'''
+  client{}:
+      container_name: client{}
+      image: client:latest
+      entrypoint: /client
+      environment:
+        - CLI_ID={}
+        - CLI_SERVER_ADDRESS=server:12345
+        - CLI_LOOP_LAPSE=1m2s
+        - CLI_LOOP_PERIOD=10s
+      networks:
+        - testing_net
+      depends_on:
+        - server'''
 
 FINAL_SEGMENT_DOCKER_COMPOSE = '''
 networks:
