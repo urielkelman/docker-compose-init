@@ -1,5 +1,6 @@
 import socket
 import logging
+from multiprocessing import Process
 
 class Server:
     def __init__(self, port, listen_backlog):
@@ -21,8 +22,8 @@ class Server:
         # the server
         while True:
             client_sock = self.__accept_new_connection()
-            self.__handle_client_connection(client_sock)
-
+            handle_connection_process = Process(target=self.__handle_client_connection, args=(client_sock,))
+            handle_connection_process.start()
 
     def __handle_client_connection(self, client_sock):
         """
