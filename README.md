@@ -34,8 +34,7 @@ testear nuevos cambios en las imágenes antes de arrancar el proyecto.
 de esta forma es mucho más rápida pero requiere tener el entorno de golang instalado en la
 máquina.
 
-### Servidor
-El servidor del presente ejemplo es un Echo Server: los mensajes recibidos por el cliente
+ente
 son devueltos por el servidor. El servidor actual funciona de la siguiente forma:
 1. Servidor acepta una nueva conexión
 2. Servidor recibe mensaje del cliente y procede a responder el mismo
